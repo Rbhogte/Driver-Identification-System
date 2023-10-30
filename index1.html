@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Driver identification</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; 
+        }
+        .container1 {
+            flex: 1; /* Make container1 take up 50% of the available width */
+            max-width: 600px;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            text-align: center;
+            margin-right: 10px; /* Add some spacing between containers */
+        }
+
+        /* Container 2 styles */
+        .container {
+            flex: 1; /* Make container take up 50% of the available width */
+            max-width: 600px;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        /* Flex container for layout */
+        .flex-container {
+            display: flex;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        button.submit {
+            background-color: #28a745;
+        }
+        .status {
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .default {
+            background-color: gray;
+            color: white;
+        }
+        
+        .online {
+            background-color: green;
+            color: white;
+        }
+        
+        .offline {
+            background-color: red;
+            color: white;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            margin-top: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .message-box {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .selfile {
+            margin: 20px;
+            padding: 10px;
+            border: 2px solid #3498db;
+            border-radius: 5px;
+            background-color: #f2f2f2;
+            text-align: center;
+          }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px 10px 10px 5px;
+            margin-top: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="flex-container">
+        <div class="container1">
+            <h2>Face Data</h2>
+            <form id="showForm" method="GET" action="/display_faces">
+                <button id="showButton" class="show">Show faces</button>
+            </form>
+            <ul>
+                {% for face in faces %}
+                    <li>{{ face.name }}</li>
+                    <!-- Add more fields as needed -->
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="container">
+            <form method="POST" action="/check_status">
+                <button id="DeviceStatus" class="status {% if device_status == 'Online' %}online{% elif device_status == 'Offline' %}offline{% else %}default{% endif %}">
+                    CheakDeviceStatus
+                </button>
+            </form>
+            <form id="uploadForm" method="post" action="/upload" enctype="multipart/form-data">
+                <div class="selfile">
+                    <input type="file" name="file">
+                </div>
+                <input type="text" name="name" placeholder="Enter Name">
+                <button id="uploadButton" class="upload">Upload Face</button>
+            </form>
+    
+            <h1>Driver Identification</h1>
+
+            <form id="compareForm" method="POST" action="/compare">
+                <button id="compareButton" class="submit">Compare</button>
+            </form>
+    
+            <div class="message-box">
+                <p>{{ message }}</p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.getElementById("showButton").addEventListener("click", function (event) {
+            event.preventDefault();
+            document.getElementById("showForm").submit();
+        });
+    
+        document.getElementById("uploadButton").addEventListener("click", function (event) {
+            event.preventDefault();
+            document.getElementById("uploadForm").submit();
+        });
+    
+        document.getElementById("compareButton").addEventListener("click", function (event) {
+            event.preventDefault();
+            document.getElementById("compareForm").submit();
+        });
+    </script>
+    
+    
+</body>
+</html>
